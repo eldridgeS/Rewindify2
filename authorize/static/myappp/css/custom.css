@@ -9,11 +9,18 @@
     border: 2px solid #3498db;
     border-radius: 5px; /* Optional: adds rounded corners */
 }
+.text-error {
+    color: #dc3545; /* Bootstrap's 'danger' red color */
+    font-weight: bold;
+}
 
 .text-white {
     color: #404040 !important; /* Slightly off-white */
 }
 
+.text-yellow {
+    color: #FFFF00 !important; /* Yellow text */
+}
 .text-primary {
     color: #3498db !important; /* Custom blue */
 }
