@@ -1,0 +1,199 @@
+/* static/css/custom.css */
+
+/* Override Bootstrap classes */
+.bg-info {
+    background-color: rgba(41, 41, 41, 0.8) !important; /* Dark color with 80% opacity */
+    outline: 2px solid #3498db; /* Example outline color */
+    outline-offset: 4px; /* Optional: space between outline and element */
+    /* OR use border for a similar effect */
+    border: 2px solid #3498db;
+    border-radius: 5px; /* Optional: adds rounded corners */
+}
+
+.text-white {
+    color: #404040 !important; /* Slightly off-white */
+}
+
+.text-primary {
+    color: #3498db !important; /* Custom blue */
+}
+
+.text-warning {
+    color: #ff33cf !important; /* Custom pink */
+}
+
+.text-light {
+    color: #FFFF00 !important; /* Custom yellow */
+}
+
+body {
+    background-color: #3d3d3d; /* Light gray background for the entire page */
+}
+
+/* Font-face and custom font styling */
+@font-face {
+    font-family: 'Cybrpnuk';
+    src: url('../css/fonts/LEMONMILK-Bold.otf') format('truetype'); /* Adjust the path based on your setup */
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Cybrpnuk', cursive;
+    background-image: url('../images/synthy.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #FFFF00;
+}
+
+.test-primary {
+    font-family: 'Cybrpnuk', cursive;
+    color: #00ffcc; /* Cyberpunk effect */
+}
+
+/* Button styles */
+.btn-primary {
+    background-color: #FFFF00 !important;
+    border-color: #FFFF00 !important;
+    color: #ff33cf !important;
+}
+
+.btn-primary:hover {
+    background-color: #ff33cf !important;
+    border-color: #ff33cf !important;
+    color: #FFFF00 !important;
+}
+
+.btn-secondary {
+    background-color: #FFFF00 !important;
+    border-color: #FFFF00 !important;
+    color: #3498db !important;
+}
+
+.btn-secondary:hover {
+    background-color: #3498db !important;
+    border-color: #3498db !important;
+    color: #FFFF00 !important;
+}
+
+/* ======== Popup Styles ======== */
+
+#open-popup {
+    width: 300px;
+    height: 50px;
+    border: none;
+    padding: 15px 32px;
+    font-size: 16px;
+    background: rgb(0, 140, 186);
+    color: white;
+    cursor: pointer;
+    transition-duration: 0.4s;
+}
+
+#open-popup:hover {
+    background-color: rgba(0, 140, 186, 0.9);
+}
+
+#popup-container {
+    display: none;
+    background: rgba(0, 0, 0, 0.6);
+    position: fixed; /* Changed to fixed to cover the whole screen */
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    transition: opacity 0.5s;
+    z-index: 1000; /* Ensures it appears above other content */
+}
+
+#popup-container .popup {
+    width: 500px;
+    height: 300px;
+    background: white;
+    color: #404040; /* Dark gray text for contrast */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+#popup-container input {
+    margin: 40px 0 20px;
+    font-size: 20px;
+    padding: 10px;
+    width: 80%;
+    border: 1px solid #3498db;
+    border-radius: 5px;
+}
+
+#signin-popup-container .popup input,
+#signup-popup-container .popup input {
+    margin: 4px 0 20px;
+    font-size: 20px;
+    padding: 2px;
+    width: 80%;
+    border: 1px solid #3498db;
+    border-radius: 5px;
+    background-color: coral;
+    color: purple;
+}
+
+
+#popup-container button {
+    width: 50%;
+    height: 50px;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    background: rgb(0, 140, 186);
+    color: white;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    border-radius: 5px;
+}
+
+#popup-container button:hover {
+    background-color: rgba(0, 140, 186, 0.9);
+}
+
+
+/* Popup container styles */
+.popup-container {
+    display: none; /* Initially hide the popup */
+    background: rgba(0, 0, 0, 0.6); /* Overlay color */
+    position: fixed; /* Fixed position */
+    top: 0; /* Full height */
+    left: 0; /* Full width */
+    right: 0; /* Full width */
+    bottom: 0; /* Full height */
+    transition: opacity 0.5s; /* Transition for fading effect */
+    z-index: 1000; /* Higher than other elements */
+    opacity: 0; /* Fully transparent initially */
+}
+
+/* Popup styles */
+.popup {
+    width: 400px; /* Adjust width as necessary */
+    margin: auto; /* Center horizontally */
+    position: absolute; /* Position relative to the container */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Offset to truly center */
+    background: darkslateblue; /* Popup background */
+    padding: 20px; /* Padding inside the popup */
+    border-radius: 8px; /* Optional: rounded corners */
+    z-index: 1001; /* Ensure it is above the overlay */
+}
+
+/* Placeholder color for inputs in sign-in and sign-up popups */
+#signin-popup-container .popup input::placeholder,
+#signup-popup-container .popup input::placeholder {
+    color: darkslateblue; /* Light gray color for placeholder text */
+    opacity: 1; /* Ensures the color is applied, some browsers set opacity by default */
+}
+

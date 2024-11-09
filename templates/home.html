@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home - Rewindify{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+
+<p>Hi {{ user.username }}!</p>
+<p><a href="{% url 'password_change' %}">Password Change</a></p>
+<form action="{% url 'logout' %}" method="post">
+  {% csrf_token %}
+  <button type="submit">Log Out</button>
+</form>
+
+
+
+
+{% else %}
+
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="jumbotron bg-info text-white text-center">
+        <h1 class="display-4 text-primary">Rewindify</h1>
+        <p class="lead text-warning">Hear the past, Listen for the future</p>
+        <hr class="my-4">
+        <div class="d-flex align-items-center justify-content-center mb-3">
+            <img src="{% static 'myappp/images/spotify.png' %}" alt="Spotify Logo" style="height: 30px; margin-right: 10px;">
+            <a href="https://www.spotify.com" class="btn btn-success" style="color: white; margin: 0; padding: 0; height: 30px; display: flex; align-items: center; text-decoration: none;">A Spotify Wrapped App</a>
+        </div>
+
+        <!-- Align buttons in a single row with spacing -->
+        <div class="d-flex justify-content-center">
+            <button id="open-signin-popup" class="btn btn-primary mx-2">Sign In</button>
+            <button id="open-signup-popup" class="btn btn-secondary mx-2">Sign Up</button>
+            <button id="spotify-login" class="btn btn-success mx-2" onclick="window.location.href='{% url 'login' %}'">Login with Spotify</button>
+        </div>
+    </div>
+</div>
+
+<!-- Sign In Popup Container -->
+<div id="signin-popup-container" class="popup-container">
+    <div class="popup">
+        <h2>Sign In</h2>
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button class="btn btn-primary mt-3">Sign In</button>
+    </div>
+</div>
+
+<!-- Sign Up Popup Container -->
+<div id="signup-popup-container" class="popup-container">
+    <div class="popup">
+        <h2>Sign Up</h2>
+        <input type="text" placeholder="Username">
+        <input type="email" placeholder="Email">
+        <input type="password" placeholder="Password">
+        <button class="btn btn-secondary mt-3">Sign Up</button>
+    </div>
+</div>
+
+<p>You are not logged in</p>
+<p><a href="{% url 'password_reset' %}">Password Reset</a></p>
+<p><a href="{% url 'login' %}">Log In</a></p>
+{% endif %}
+
+{% endblock %}
