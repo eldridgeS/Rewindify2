@@ -13,9 +13,6 @@
   <button type="submit">Log Out</button>
 </form>
 
-
-
-
 {% else %}
 
 <div class="d-flex justify-content-center align-items-center min-vh-100">
@@ -30,37 +27,16 @@
 
         <!-- Align buttons in a single row with spacing -->
         <div class="d-flex justify-content-center">
-            <button id="open-signin-popup" class="btn btn-primary mx-2">Sign In</button>
-            <button id="open-signup-popup" class="btn btn-secondary mx-2">Sign Up</button>
-            <button id="spotify-login" class="btn btn-success mx-2" onclick="window.location.href='{% url 'login' %}'">Login with Spotify</button>
+            <!-- Redirect to login page -->
+            <a href="{% url 'login' %}" class="btn btn-primary mx-2">Sign In</a>
+
+            <!-- Redirect to signup page -->
+            <a href="{% url 'signup' %}" class="btn btn-secondary mx-2">Sign Up</a>
+
         </div>
     </div>
 </div>
-
-<!-- Sign In Popup Container -->
-<div id="signin-popup-container" class="popup-container">
-    <div class="popup">
-        <h2>Sign In</h2>
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
-        <button class="btn btn-primary mt-3">Sign In</button>
-    </div>
-</div>
-
-<!-- Sign Up Popup Container -->
-<div id="signup-popup-container" class="popup-container">
-    <div class="popup">
-        <h2>Sign Up</h2>
-        <input type="text" placeholder="Username">
-        <input type="email" placeholder="Email">
-        <input type="password" placeholder="Password">
-        <button class="btn btn-secondary mt-3">Sign Up</button>
-    </div>
-</div>
-
-<p>You are not logged in</p>
-<p><a href="{% url 'password_reset' %}">Password Reset</a></p>
-<p><a href="{% url 'login' %}">Log In</a></p>
+    
 {% endif %}
 
 {% endblock %}
