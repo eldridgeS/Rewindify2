@@ -16,97 +16,108 @@ from django.http import HttpResponse
 from .forms import CustomUserCreationForm
 from .models import UserSpotifyProfile
 import logging
+import base64
+import json
+import random
+import string
+import requests
+from django.shortcuts import render, redirect
+from django.http import JsonResponse, HttpResponse
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.sessions.models import Session
 
-def spotify_login(request):
-    sp_oauth = SpotifyOAuth(client_id="e2f1ae44b7714b3a904b51b818360e71",
-                            client_secret="b2152296189648798ab82d40b3f1bfd2",
-                            redirect_uri="http://localhost:8000/authorize/spotify/callback/",
-                            scope="user-library-read user-top-read user-read-email playlist-read-private")
+# Spotify API and app credentials
+CLIENT_ID = settings.SPOTIFY_CLIENT_ID
+CLIENT_SECRET = settings.SPOTIFY_CLIENT_SECRET
+REDIRECT_URI = settings.SPOTIFY_REDIRECT_URI
+STATE_KEY = 'spotify_auth_state'
 
-    auth_url = sp_oauth.get_authorize_url()
+
+
+
+def generate_random_string(length=16):
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
+def loginn(request):
+    # Generate a random state string to prevent CSRF attacks
+    state = generate_random_string()
+    request.session[STATE_KEY] = state
+
+    # Spotify authorization URL
+    scope = 'user-read-private user-read-email'
+    auth_url = f'https://accounts.spotify.com/authorize?response_type=code&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&state={state}&scope={scope}'
+
     return redirect(auth_url)
 
+def callback(request):
+    code = request.GET.get('code')  # Get the authorization code from the URL
+    state = request.GET.get('state')  # Get the state parameter for security
 
-def sp(request):
-    return render(request, 'registration/spoterpy.html')
-
-# Set up logging
-logger = logging.getLogger(__name__)
-
-def spotify_callback(request):
-    sp_oauth = SpotifyOAuth(client_id="e2f1ae44b7714b3a904b51b818360e71",
-                            client_secret="b2152296189648798ab82d40b3f1bfd2",
-                            redirect_uri="http://localhost:8000/authorize/spotify/callback/")
-
-    code = request.GET.get('code')
     if not code:
-        logger.error("Authorization code not found")
-        return HttpResponse("Authorization code not found", status=400)
+        return HttpResponse("No authorization code received", status=400)
 
-    try:
-        # Manually send request to get access token
-        auth_str = f"{sp_oauth.client_id}:{sp_oauth.client_secret}"
-        b64_auth_str = base64.urlsafe_b64encode(auth_str.encode()).decode()
-        headers = {
-            "Authorization": f"Basic {b64_auth_str}",
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-        data = {
-            "grant_type": "authorization_code",
-            "code": code,
-            "redirect_uri": sp_oauth.redirect_uri
-        }
-        response = requests.post("https://accounts.spotify.com/api/token", headers=headers, data=data)
+    # Step 2: Exchange the authorization code for an access token
+    auth = (settings.SPOTIFY_CLIENT_ID, settings.SPOTIFY_CLIENT_SECRET)
+    data = {
+        'grant_type': 'authorization_code',
+        'code': code,
+        'redirect_uri': settings.SPOTIFY_REDIRECT_URI,
+    }
 
-        # Log the entire response
-        logger.info(f"Spotify token response status: {response.status_code}")
-        logger.info(f"Spotify token response text: {response.text}")
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+    }
 
-        # Check if response is successful
-        if response.status_code != 200:
-            logger.error(f"Failed to obtain access token: {response.text}")
-            return HttpResponse(f"Failed to obtain access token: {response.text}", status=response.status_code)
+    token_url = 'https://accounts.spotify.com/api/token'
+    response = requests.post(token_url, data=data, headers=headers, auth=auth)
 
-        # Parse the token information
-        token_info = response.json()
+    if response.status_code != 200:
+        return HttpResponse("Error fetching token", status=500)
 
-    except Exception as e:
-        logger.error(f"Failed to obtain access token: {e}")
-        return HttpResponse(f"Failed to obtain access token: {str(e)}", status=400)
+    token_data = response.json()
+    access_token = token_data.get('access_token')
 
-    access_token = token_info.get('access_token')
-    refresh_token = token_info.get('refresh_token')
+    if not access_token:
+        return HttpResponse("Failed to retrieve access token", status=500)
 
-    sp = spotipy.Spotify(auth=access_token)
-    try:
-        user_profile = sp.current_user()
-        spotify_id = user_profile['id']  # Get the Spotify user ID
-    except Exception as e:
-        logger.error(f"Failed to get user profile: {e}")
-        return HttpResponse(f"Failed to get user profile: {str(e)}", status=400)
+    # Step 3: Use the access token to fetch the user's profile data from Spotify
+    user_profile_url = 'https://api.spotify.com/v1/me'
+    user_profile_headers = {
+        'Authorization': f'Bearer {access_token}',
+    }
+    user_profile_response = requests.get(user_profile_url, headers=user_profile_headers)
 
-    user = request.user
+    if user_profile_response.status_code != 200:
+        return HttpResponse("Error fetching user profile", status=500)
 
-    # Store tokens in the database
-    profile, created = UserSpotifyProfile.objects.update_or_create(
-        user=user,
-        defaults={'spotify_id': spotify_id, 'access_token': access_token, 'refresh_token': refresh_token}
-    )
+    user_profile = user_profile_response.json()
 
-    return redirect('link_spotify_success')
+    # Step 4: Render the user profile data in a template
+    return render(request, 'registration/logged_in.html', {'profile': user_profile})
+@csrf_exempt
+def refresh_token(request):
+    refresh_token = request.POST.get('refresh_token')
 
+    # Prepare token refresh request
+    token_url = 'https://accounts.spotify.com/api/token'
+    headers = {
+        'Authorization': 'Basic ' + base64.b64encode(f'{CLIENT_ID}:{CLIENT_SECRET}'.encode()).decode('utf-8'),
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
 
-def refresh_spotify_token(request):
-    refresh_token = request.session.get('spotify_refresh_token')
-    if not refresh_token:
-        return redirect('spotify_login')  # Redirect to login if refresh token is missing
+    data = {
+        'grant_type': 'refresh_token',
+        'refresh_token': refresh_token
+    }
 
-    sp_oauth = SpotifyOAuth(client_id="e2f1ae44b7714b3a904b51b818360e71",
-                            client_secret="b2152296189648798ab82d40b3f1bfd2",
-                            redirect_uri="http://localhost:8000/authorize/spotify/callback/")
+    response = requests.post(token_url, headers=headers, data=data)
 
-    token_info = sp_oauth.refresh_access_token(refresh_token)
-    request.session['spotify_token'] = token_info['access_token']
+    if response.status_code == 200:
+        tokens = response.json()
+        return JsonResponse(tokens)
+    else:
+        return JsonResponse({'error': 'failed_to_refresh_token'}, status=400)
 
 
 def get_spotify_playlists(request):

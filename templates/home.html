@@ -6,13 +6,21 @@
 {% block content %}
 {% if user.is_authenticated %}
 
-<p>Hi {{ user.username }}!</p>
-<p><a href="{% url 'password_change' %}">Password Change</a></p>
-<form action="{% url 'logout' %}" method="post">
-  {% csrf_token %}
-  <button type="submit">Log Out</button>
-</form>
-<a href="{% url 'spotify_login' %}" class="btn btn-success">Link your Spotify Account</a>
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="jumbotron bg-info text-white text-center">
+        <p class="display-4 text-primary">Welcome, {{ user.username }}!</p>
+        <p class="lead text-warning">We're glad to have you back on Rewindify!</p>
+        <hr class="my-4">
+        <div class="d-flex justify-content-center">
+            <a href="{% url 'password_change' %}" class="btn btn-warning mx-2">Change Password</a>
+            <a href="{% url 'loginn' %}" class="btn btn-success mx-2">Link your Spotify Account</a>
+        </div>
+        <form action="{% url 'logout' %}" method="post" class="mt-3">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Log Out</button>
+        </form>
+    </div>
+</div>
 
 {% else %}
 
@@ -26,14 +34,9 @@
             <a href="https://www.spotify.com" class="btn btn-success" style="color: white; margin: 0; padding: 0; height: 30px; display: flex; align-items: center; text-decoration: none;">A Spotify Wrapped App</a>
         </div>
 
-        <!-- Align buttons in a single row with spacing -->
         <div class="d-flex justify-content-center">
-            <!-- Redirect to login page -->
             <a href="{% url 'login' %}" class="btn btn-primary mx-2">Sign In</a>
-
-            <!-- Redirect to signup page -->
             <a href="{% url 'signup' %}" class="btn btn-secondary mx-2">Sign Up</a>
-
         </div>
     </div>
 </div>

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Spotify User Profile - Rewindify{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="jumbotron bg-info text-white text-center">
+        <p class="display-4 text-primary">Welcome, {{ profile.display_name }}</p>
+
+        {% if profile.images.0.url %}
+            <img src="{{ profile.images.0.url }}" alt="User Profile Image" class="rounded-circle my-4" width="150">
+        {% endif %}
+
+        <p class="lead text-warning">Email: {{ profile.email }}</p>
+        <p class="lead text-warning">Country: {{ profile.country }}</p>
+        <p class="my-3">
+            <a href="{{ profile.external_urls.spotify }}" target="_blank" class="btn btn-success">Visit Spotify Profile</a>
+        </p>
+
+        <div class="d-flex justify-content-center mt-4">
+            <a href="/" class="btn btn-primary mx-2">Back to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

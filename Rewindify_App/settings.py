@@ -127,3 +127,8 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+SPOTIFY_CLIENT_ID = 'e2f1ae44b7714b3a904b51b818360e71'
+SPOTIFY_CLIENT_SECRET = 'b2152296189648798ab82d40b3f1bfd2'
+SPOTIFY_REDIRECT_URI = 'http://localhost:8000/authorize/callback/'
