@@ -12,12 +12,13 @@
   {% csrf_token %}
   <button type="submit">Log Out</button>
 </form>
+<a href="{% url 'spotify_login' %}" class="btn btn-success">Link your Spotify Account</a>
 
 {% else %}
 
 <div class="d-flex justify-content-center align-items-center min-vh-100">
     <div class="jumbotron bg-info text-white text-center">
-        <h1 class="display-4 text-primary">Rewindify</h1>
+        <h1 class="display-4 text-primary" data-value="Rewindify">Rewindify</h1>
         <p class="lead text-warning">Hear the past, Listen for the future</p>
         <hr class="my-4">
         <div class="d-flex align-items-center justify-content-center mb-3">
