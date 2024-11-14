@@ -51,13 +51,13 @@ def loginn(request):
     return redirect(auth_url)
 
 def callback(request):
-    code = request.GET.get('code')  # Get the authorization code from the URL
-    state = request.GET.get('state')  # Get the state parameter for security
+    code = request.GET.get('code')
+    state = request.GET.get('state')
 
     if not code:
         return HttpResponse("No authorization code received", status=400)
 
-    # Step 2: Exchange the authorization code for an access token
+    # Exchange the authorization code for an access token
     auth = (settings.SPOTIFY_CLIENT_ID, settings.SPOTIFY_CLIENT_SECRET)
     data = {
         'grant_type': 'authorization_code',
@@ -81,7 +81,10 @@ def callback(request):
     if not access_token:
         return HttpResponse("Failed to retrieve access token", status=500)
 
-    # Step 3: Use the access token to fetch the user's profile data from Spotify
+    # Save access token to session
+    request.session['spotify_token'] = access_token
+
+    # Fetch user profile data from Spotify
     user_profile_url = 'https://api.spotify.com/v1/me'
     user_profile_headers = {
         'Authorization': f'Bearer {access_token}',
@@ -93,8 +96,12 @@ def callback(request):
 
     user_profile = user_profile_response.json()
 
-    # Step 4: Render the user profile data in a template
-    return render(request, 'registration/logged_in.html', {'profile': user_profile})
+    # Fetch playlists
+    sp = spotipy.Spotify(auth=access_token)
+    playlists = sp.current_user_playlists()
+
+    # Render the user profile and playlists in the template
+    return render(request, 'registration/logged_in.html', {'profile': user_profile, 'playlists': playlists['items']})
 @csrf_exempt
 def refresh_token(request):
     refresh_token = request.POST.get('refresh_token')

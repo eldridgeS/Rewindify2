@@ -14,6 +14,23 @@
 
         <p class="lead text-warning">Email: {{ profile.email }}</p>
         <p class="lead text-warning">Country: {{ profile.country }}</p>
+
+        <h3 class="mt-4 text-primary">Your Playlists</h3>
+        <ul class="list-unstyled">
+            {% if playlists %}
+                {% for playlist in playlists %}
+                    <li class="my-3">
+                        {% if playlist.images.0.url %}
+                            <img src="{{ playlist.images.0.url }}" alt="{{ playlist.name }}" class="rounded my-2" width="100">
+                        {% endif %}
+                        <strong class="text-light">{{ playlist.name }}</strong> <span class="text-light"> - {{ playlist.tracks.total }} tracks
+                    </li>
+                {% endfor %}
+            {% else %}
+                <p class="text-warning">No playlists found.</p>
+            {% endif %}
+        </ul>
+
         <p class="my-3">
             <a href="{{ profile.external_urls.spotify }}" target="_blank" class="btn btn-success">Visit Spotify Profile</a>
         </p>
