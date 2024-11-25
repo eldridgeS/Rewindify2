@@ -4,18 +4,21 @@
 {% block title %}Spotify User Profile - Rewindify{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-center align-items-center min-vh-100">
-    <div class="jumbotron bg-info text-white text-center">
-        <p class="display-4 text-primary">Welcome, {{ profile.display_name }}</p>
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <!-- Scrollable Window -->
+    <div class="window-container bg-info text-white rounded shadow-lg p-4">
+        <p class="display-4 text-primary text-center">Welcome, {{ profile.display_name }}</p>
 
         {% if profile.images.0.url %}
-            <img src="{{ profile.images.0.url }}" alt="User Profile Image" class="rounded-circle my-4" width="150">
+            <div class="text-center">
+                <img src="{{ profile.images.0.url }}" alt="User Profile Image" class="rounded-circle my-4" width="150">
+            </div>
         {% endif %}
 
         <p class="lead text-warning">Email: {{ profile.email }}</p>
         <p class="lead text-warning">Country: {{ profile.country }}</p>
 
-        <!-- Your Playlists Section -->
+        <!-- Playlists Section -->
         <h3 class="mt-4 text-primary">Your Playlists</h3>
         <ul class="list-unstyled">
             {% if playlists %}
@@ -24,7 +27,7 @@
                         {% if playlist.images.0.url %}
                             <img src="{{ playlist.images.0.url }}" alt="{{ playlist.name }}" class="rounded my-2" width="100">
                         {% endif %}
-                        <strong class="text-light">{{ playlist.name }}</strong> <span class="text-light"> - {{ playlist.tracks.total }} tracks</span>
+                        <strong class="text-light">{{ playlist.name }}</strong> - <span class="text-light">{{ playlist.tracks.total }} tracks</span>
                     </li>
                 {% endfor %}
             {% else %}
@@ -32,7 +35,7 @@
             {% endif %}
         </ul>
 
-        <!-- New: Top Artists Section -->
+        <!-- Top Artists Section -->
         <h3 class="mt-4 text-primary">Your Top Artists</h3>
         <ul class="list-unstyled">
             {% if top_artists %}
@@ -49,7 +52,7 @@
             {% endif %}
         </ul>
 
-        <!-- New: Top Tracks Section -->
+        <!-- Top Tracks Section -->
         <h3 class="mt-4 text-primary">Your Top Tracks</h3>
         <ul class="list-unstyled">
             {% if top_tracks %}
@@ -71,8 +74,7 @@
             {% endif %}
         </ul>
 
-
-        <!-- New: Top Genres Section -->
+        <!-- Top Genres Section -->
         <h3 class="mt-4 text-primary">Your Top Genres</h3>
         <ul class="list-unstyled">
             {% if genres %}
@@ -84,7 +86,7 @@
             {% endif %}
         </ul>
 
-        <p class="my-3">
+        <p class="text-center my-3">
             <a href="{{ profile.external_urls.spotify }}" target="_blank" class="btn btn-success">Visit Spotify Profile</a>
         </p>
 

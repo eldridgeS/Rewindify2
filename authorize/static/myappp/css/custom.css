@@ -232,3 +232,29 @@ body {
     opacity: 1; /* Ensures the color is applied, some browsers set opacity by default */
 }
 
+/*
+new additions below
+ */
+.window-container {
+    height: 80%; /* Set a smaller height for the window */
+    width: 60%; /* Adjust width as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Avoid horizontal scrolling */
+    position: relative; /* Ensure proper positioning */
+    padding: 20px; /* Padding for aesthetics */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+}
+
+.window-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.window-container::-webkit-scrollbar-track {
+    background: #343a40;
+}
+
+.window-container::-webkit-scrollbar-thumb {
+    background: #6c757d;
+    border-radius: 4px;
+}
