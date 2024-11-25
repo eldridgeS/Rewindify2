@@ -45,7 +45,7 @@ def loginn(request):
     request.session[STATE_KEY] = state
 
     # Spotify authorization URL
-    scope = 'user-read-private user-read-email'
+    scope = 'user-read-private user-read-email user-top-read user-library-read'
     auth_url = f'https://accounts.spotify.com/authorize?response_type=code&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&state={state}&scope={scope}'
 
     return redirect(auth_url)
@@ -99,9 +99,22 @@ def callback(request):
     # Fetch playlists
     sp = spotipy.Spotify(auth=access_token)
     playlists = sp.current_user_playlists()
+    top_tracks = sp.current_user_top_tracks(limit=5)
+    top_artists = sp.current_user_top_artists(limit=5)
+
+    genres = set()  # Using a set to avoid duplicates
+    for artist in top_artists['items']:
+        artist_info = sp.artist(artist['id'])  # Get detailed artist information
+        genres.update(artist_info['genres'])
 
     # Render the user profile and playlists in the template
-    return render(request, 'registration/logged_in.html', {'profile': user_profile, 'playlists': playlists['items']})
+    return render(request, 'registration/logged_in.html', {
+        'profile': user_profile,
+        'playlists': playlists['items'],
+        'top_tracks': top_tracks['items'] if top_tracks['items'] else None,  # If empty, pass None
+        'top_artists': top_artists['items'] if top_artists['items'] else None,  # If empty, pass None
+        'genres': list(genres) if genres else None,  # If no genres, pass None
+    })
 @csrf_exempt
 def refresh_token(request):
     refresh_token = request.POST.get('refresh_token')
@@ -146,3 +159,7 @@ class SignUpView(generic.CreateView):
 
 def link_spotify_success(request):
     return render(request, 'registration/link_spotify_success.html')
+
+
+
+

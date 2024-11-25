@@ -15,6 +15,7 @@
         <p class="lead text-warning">Email: {{ profile.email }}</p>
         <p class="lead text-warning">Country: {{ profile.country }}</p>
 
+        <!-- Your Playlists Section -->
         <h3 class="mt-4 text-primary">Your Playlists</h3>
         <ul class="list-unstyled">
             {% if playlists %}
@@ -23,11 +24,57 @@
                         {% if playlist.images.0.url %}
                             <img src="{{ playlist.images.0.url }}" alt="{{ playlist.name }}" class="rounded my-2" width="100">
                         {% endif %}
-                        <strong class="text-light">{{ playlist.name }}</strong> <span class="text-light"> - {{ playlist.tracks.total }} tracks
+                        <strong class="text-light">{{ playlist.name }}</strong> <span class="text-light"> - {{ playlist.tracks.total }} tracks</span>
                     </li>
                 {% endfor %}
             {% else %}
                 <p class="text-warning">No playlists found.</p>
+            {% endif %}
+        </ul>
+
+        <!-- New: Top Artists Section -->
+        <h3 class="mt-4 text-primary">Your Top Artists</h3>
+        <ul class="list-unstyled">
+            {% if top_artists %}
+                {% for artist in top_artists %}
+                    <li class="my-3">
+                        {% if artist.images.0.url %}
+                            <img src="{{ artist.images.0.url }}" alt="{{ artist.name }}" class="rounded-circle my-2" width="50">
+                        {% endif %}
+                        <strong class="text-light">{{ artist.name }}</strong>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <p class="text-warning">No top artists found.</p>
+            {% endif %}
+        </ul>
+
+        <!-- New: Top Tracks Section -->
+        <h3 class="mt-4 text-primary">Your Top Tracks</h3>
+        <ul class="list-unstyled">
+            {% if top_tracks %}
+                {% for track in top_tracks %}
+                    <li class="my-3">
+                        {% if track.album.images.0.url %}
+                            <img src="{{ track.album.images.0.url }}" alt="{{ track.name }}" class="rounded my-2" width="50">
+                        {% endif %}
+                        <strong class="text-light">{{ track.name }}</strong> <span class="text-light">by {{ track.artists|join:", " }}</span>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <p class="text-warning">No top tracks found.</p>
+            {% endif %}
+        </ul>
+
+        <!-- New: Top Genres Section -->
+        <h3 class="mt-4 text-primary">Your Top Genres</h3>
+        <ul class="list-unstyled">
+            {% if genres %}
+                {% for genre in genres %}
+                    <li class="my-3 text-light">{{ genre }}</li>
+                {% endfor %}
+            {% else %}
+                <p class="text-warning">No genres found.</p>
             {% endif %}
         </ul>
 
