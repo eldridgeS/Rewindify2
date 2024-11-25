@@ -174,6 +174,9 @@ class SignUpView(generic.CreateView):
 def link_spotify_success(request):
     return render(request, 'registration/link_spotify_success.html')
 
+def wrappost(request):
+    return render(request, 'registration/wrap_post.html')
+
 
 
 

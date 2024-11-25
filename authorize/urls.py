@@ -13,5 +13,6 @@ urlpatterns = [
     path('refresh_token/', views.refresh_token, name='refresh_token'),
     path('spotify/playlists/', views.get_spotify_playlists, name='spotify_playlists'),
     path('link-success/', views.link_spotify_success, name='link_spotify_success'),
+    path('wrappost/', views.wrappost, name='wrappost'),
 
 ]

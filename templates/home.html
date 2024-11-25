@@ -14,6 +14,7 @@
         <div class="d-flex justify-content-center">
             <a href="{% url 'password_change' %}" class="btn btn-warning mx-2">Change Password</a>
             <a href="{% url 'loginn' %}" class="btn btn-success mx-2">View your Spotify Account</a>
+            <a href="{% url 'wrappost' %}" class="btn btn-success mx-2" style=background-color:blue>Post Your Wrap</a>
         </div>
         <form action="{% url 'logout' %}" method="post" class="mt-3">
             {% csrf_token %}
