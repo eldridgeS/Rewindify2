@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import environ
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -129,6 +129,12 @@ LOGOUT_REDIRECT_URL = "home"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
-SPOTIFY_CLIENT_ID = 'e2f1ae44b7714b3a904b51b818360e71'
-SPOTIFY_CLIENT_SECRET = 'b2152296189648798ab82d40b3f1bfd2'
-SPOTIFY_REDIRECT_URI = 'http://localhost:8000/authorize/callback/'
+env = environ.Env()
+environ.Env.read_env()  # Reads the .env file
+SPOTIFY_CLIENT_ID = env("SPOTIFY_CLIENT_ID")
+SPOTIFY_CLIENT_SECRET = env("SPOTIFY_CLIENT_SECRET")
+SPOTIFY_REDIRECT_URI = env("SPOTIFY_REDIRECT_URI")
+# print("SPOTIFY_CLIENT_ID:", env("SPOTIFY_CLIENT_ID", default=None))
+# print("SPOTIFY_CLIENT_SECRET:", env("SPOTIFY_CLIENT_SECRET", default=None))
+# print("SPOTIFY_REDIRECT_URI:", env("SPOTIFY_REDIRECT_URI", default=None))
+
