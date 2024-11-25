@@ -16,3 +16,10 @@ class CustomUserCreationForm(UserCreationForm):
         if User.objects.filter(email=email).exists():
             raise ValidationError("This email is already taken.")
         return email
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Remove help texts
+        self.fields['username'].help_text = None
+        self.fields['password1'].help_text = ''
+        self.fields['password2'].help_text = ''
