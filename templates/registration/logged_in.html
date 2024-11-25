@@ -71,6 +71,15 @@
             {% endif %}
         </ul>
 
+        <!-- New: Total Minutes Listened Section -->
+        <h3 class="mt-4 text-primary">Total Minutes Listened</h3>
+        <p class="lead text-light">
+            {% if total_minutes %}
+                {{ total_minutes }} minutes
+            {% else %}
+                No listening data available.
+            {% endif %}
+        </p>
 
         <!-- New: Top Genres Section -->
         <h3 class="mt-4 text-primary">Your Top Genres</h3>
