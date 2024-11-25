@@ -101,11 +101,17 @@ def callback(request):
     playlists = sp.current_user_playlists()
     top_tracks = sp.current_user_top_tracks(limit=5)
     top_artists = sp.current_user_top_artists(limit=5)
+    total_minutes = 0  # Variable to store total listening time in minutes
 
     genres = set()  # Using a set to avoid duplicates
     for artist in top_artists['items']:
         artist_info = sp.artist(artist['id'])  # Get detailed artist information
         genres.update(artist_info['genres'])
+
+    for track in top_tracks['items']:
+        track_duration_ms = track['duration_ms']
+        track_duration_minutes = track_duration_ms / 1000 / 60  # Convert milliseconds to minutes
+        total_minutes += track_duration_minutes
 
     # Render the user profile and playlists in the template
     return render(request, 'registration/logged_in.html', {
@@ -114,6 +120,7 @@ def callback(request):
         'top_tracks': top_tracks['items'] if top_tracks['items'] else None,  # If empty, pass None
         'top_artists': top_artists['items'] if top_artists['items'] else None,  # If empty, pass None
         'genres': list(genres) if genres else None,  # If no genres, pass None
+        'total_minutes': round(total_minutes, 2) if total_minutes else None,  # Round total minutes
     })
 @csrf_exempt
 def refresh_token(request):
