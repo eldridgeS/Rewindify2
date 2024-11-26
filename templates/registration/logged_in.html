@@ -17,8 +17,21 @@
         <div id="dataCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
 
-                <!-- Top Tracks Section -->
+                <!-- First Carousel Item - User Profile -->
                 <div class="carousel-item active">
+                    <p class="display-4 text-primary text-center">Welcome, {{ profile.display_name }}</p>
+
+                    {% if profile.images.0.url %}
+                        <div class="text-center">
+                            <img src="{{ profile.images.0.url }}" alt="User Profile Image" class="rounded-circle my-4" width="150">
+                        </div>
+                    {% endif %}
+
+                    <p class="lead text-warning text-center">We are so happy you're here!</p>
+                </div>
+
+                <!-- Top Tracks Section -->
+                <div class="carousel-item">
                     <h3 class="mt-4 text-primary">Your Top Tracks</h3>
                     <ul class="list-unstyled">
                         {% if top_tracks %}
