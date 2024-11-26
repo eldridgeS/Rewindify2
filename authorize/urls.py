@@ -17,5 +17,6 @@ urlpatterns = [
     path('delete/', views.delete, name='delete'),
     path('game/', views.song_guessing_game, name='song_guessing_game'),
     path('password_change/', views.password_change, name='password_change'),
+    path('past_wraps/', views.past_wraps, name='past_wraps'),
 
 ]

@@ -13,13 +13,17 @@
         <hr class="my-4">
         <div class="d-flex justify-content-center">
             <a href="{% url 'password_change' %}" class="btn btn-warning mx-2">Change Password</a>
-            <a href="{% url 'loginn' %}" class="btn btn-success mx-2" style=background-color:hotpink>View your Rewindify Account</a>
-            <a href="{% url 'wrappost' %}" class="btn btn-success mx-2" style=background-color:blue>Post Your Wrap</a>
+            <a href="{% url 'loginn' %}" class="btn btn-success mx-2" style="background-color: hotpink;">View your Rewindify Account</a>
+            <a href="{% url 'wrappost' %}" class="btn btn-success mx-2" style="background-color: blue;">Post Your Wrap</a>
         </div>
-        <form action="{% url 'logout' %}" method="post" class="mt-3">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Log Out</button>
-        </form>
+        <div class="d-flex justify-content-center mt-3">
+            <a href="{% url 'delete' %}" class="btn btn-purple mx-2" style="background-color: purple; color: white;">Delete Account</a>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger mx-2">Log Out</button>
+            </form>
+            <a href="{% url 'past_wraps' %}" class="btn btn-green mx-2" style="background-color: green; color: white;">View Past Wraps</a>
+        </div>
     </div>
 </div>
 

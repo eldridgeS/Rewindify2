@@ -210,8 +210,21 @@ def password_change(request):
 
     return render(request, 'registration/password_change.html', {'form': form})
 
+@login_required
+def delete(request):
+    if request.method == "POST":
+        user = request.user
+        user.delete()
+        messages.success(request, "Your account has been deleted successfully.")
+        return redirect("home")  # Redirect to the homepage or login page after deletion
 
-from django.shortcuts import render, redirect
+    return render(request, "delete.html")
+
+
+@login_required
+def past_wraps(request):
+    wraps = Wrap.objects.filter(user=request.user).order_by("-created_at")
+    return render(request, "past_wraps.html", {"wraps": wraps})
 
 
 @login_required
