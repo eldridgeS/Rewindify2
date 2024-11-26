@@ -6,17 +6,12 @@
 {% block content %}
 <div class="d-flex justify-content-center align-items-center vh-100">
     <!-- Scrollable Window -->
-    <div class="window-container bg-info text-white rounded shadow-lg p-4">
-        <p class="display-4 text-primary text-center">Welcome, {{ profile.display_name }}</p>
+    <div class="window-container bg-info text-white rounded shadow-lg p-4 position-relative">
 
-        {% if profile.images.0.url %}
-            <div class="text-center">
-                <img src="{{ profile.images.0.url }}" alt="User Profile Image" class="rounded-circle my-4" width="150">
-            </div>
-        {% endif %}
-
-        <p class="lead text-warning">Email: {{ profile.email }}</p>
-        <p class="lead text-warning">Country: {{ profile.country }}</p>
+        <!-- Mute Button -->
+        <button id="muteButton" class="btn btn-light position-absolute" style="top: 10px; right: 10px;">
+            <span id="muteIcon" class="text-dark">🔊</span>
+        </button>
 
         <!-- Slideshow Container (Carousel) -->
         <div id="dataCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -40,12 +35,7 @@
                                     </span>
 
                                     {% if track.preview_url %}
-                                        <div class="mt-2">
-                                            <audio controls>
-                                                <source src="{{ track.preview_url }}" type="audio/mpeg">
-                                                Your browser does not support the audio element.
-                                            </audio>
-                                        </div>
+                                        <div class="mt-2" data-preview-url="{{ track.preview_url }}"></div>
                                     {% endif %}
                                 </li>
                             {% endfor %}
@@ -133,10 +123,6 @@
             </button>
         </div>
 
-        <!-- Wrap Image and Button -->
-        <img id="wrapimage" style="max-width: 200px; height: auto;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFUAfyVe3Easiycyh3isP9wDQTYuSmGPsPQvLIJdEYvQ_DsFq5Ez2Nh_QjiS3oZ3B8ZPfK9cZQyIStmQMV1lDPLw" alt="Spotify Wrap Image" />
-        <button id="generateWrapButton" style="background-color:blue">Generate Wrap!</button>
-
         <p class="text-center my-3">
             <a href="{{ profile.external_urls.spotify }}" target="_blank" class="btn btn-success">Visit Spotify Profile</a>
         </p>
@@ -147,18 +133,48 @@
     </div>
 </div>
 
+<!-- Hidden audio player -->
+<audio id="previewPlayer" style="display: none;"></audio>
+
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const changeImageBtn = document.getElementById('generateWrapButton');
-        const trackImage = document.getElementById('wrapimage');
-        const topTracks = {{ top_tracks|safe }};
+document.addEventListener('DOMContentLoaded', function() {
+    const player = document.getElementById('previewPlayer');
+    const carousel = document.getElementById('dataCarousel');
+    const muteButton = document.getElementById('muteButton');
+    const muteIcon = document.getElementById('muteIcon');
+    let currentAudio = null;
+    let isMuted = false;
 
-        changeImageBtn.addEventListener('click', function() {
-            if (topTracks.length > 0) {
-                trackImage.src = topTracks[0].album_image;
-            }
-        });
+    function playRandomPreview() {
+        const previewUrls = Array.from(document.querySelectorAll('[data-preview-url]'))
+            .map(el => el.dataset.previewUrl)
+            .filter(url => url);
+
+        if (previewUrls.length > 0) {
+            const randomUrl = previewUrls[Math.floor(Math.random() * previewUrls.length)];
+            player.src = randomUrl;
+            player.play().catch(e => console.error('Error playing audio:', e));
+            currentAudio = randomUrl;
+        }
+    }
+
+    carousel.addEventListener('slide.bs.carousel', function (e) {
+        if (player.src !== currentAudio) {
+            player.pause();
+            player.currentTime = 0;
+        }
+        playRandomPreview();
     });
-</script>
 
+    // Mute/Unmute functionality
+    muteButton.addEventListener('click', function() {
+        isMuted = !isMuted;
+        player.muted = isMuted;
+        muteIcon.textContent = isMuted ? '🔇' : '🔊'; // Change icon based on mute status
+    });
+
+    // Initial play
+    playRandomPreview();
+});
+</script>
 {% endblock %}
