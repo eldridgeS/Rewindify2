@@ -119,18 +119,17 @@
     </div>
 </div>
     <script>
-        var topTracks = {{ top_tracks|safe }};
-        var wrapButton = document.getElementById('generateWrapButton');
-        var imageElement = document.getElementById('wrapImage');
+        document.addEventListener('DOMContentLoaded', function() {
+        const changeImageBtn = document.getElementById('generateWrapButton');
+        const trackImage = document.getElementById('wrapimage');
+        const topTracks = {{ top_tracks|safe }};
 
-        wrapButton.addEventListener('click', function() {
-            // Get the image URL from the first element of the top_tracks array
-            var imageUrl = topTracks[0].album.images[0].url; // Access the URL of the first track's album image
-
-            // Change the source of the image
-            imageElement.src = imageUrl;
+        changeImageBtn.addEventListener('click', function() {
+            if (topTracks.length > 0) {
+                trackImage.src = topTracks[0].image_url;
+            }
         });
-
+    });
 
     </script>
 {% endblock %}
