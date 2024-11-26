@@ -121,18 +121,8 @@
     <script>
         function changeImage() {
             // Get the image element by its ID
-            var image = document.getElementById("image");
-
-            // Change the source of the image
-            fetch(top_tracks)  // Replace with your actual API URL
-            .then(response => response.json())  // Parse the response to JSON
-            .then(data => {
-                // Access the first element of the array
-                const firstElement = data[0];
-
-                // Display the first element in the HTML
-                image.src = top_tracks.album.images[0].url;
-            })
+            var image = document.getElementById("wrapimage");
+            image.src = top_tracks.album.images[0].url;
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
