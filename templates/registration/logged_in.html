@@ -107,7 +107,7 @@
 
         <img id="wrapimage" style="max-width: 200px; height: auto; " src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFUAfyVe3Easiycyh3isP9wDQTYuSmGPsPQvLIJdEYvQ_DsFq5Ez2Nh_QjiS3oZ3B8ZPfK9cZQyIStmQMV1lDPLw" alt="Spotify Wrap Image" />
 
-        <button onclick="changeImage()" id="generateWrapButton" style="background-color:blue">Generate Wrap!</button>
+        <button id="generateWrapButton" style="background-color:blue">Generate Wrap!</button>
 
         <p class="text-center my-3">
             <a href="{{ profile.external_urls.spotify }}" target="_blank" class="btn btn-success">Visit Spotify Profile</a>
@@ -119,13 +119,19 @@
     </div>
 </div>
     <script>
-        function changeImage() {
-            // Get the image element by its ID
-            var image = document.getElementById("wrapimage");
-            image.src = top_tracks.album.images[0].url;
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
+        var topTracks = {{ top_tracks|safe }};
+        var wrapButton = document.getElementById('generateWrapButton');
+        var imageElement = document.getElementById('wrapImage');
+
+        changeButton.addEventListener('click', function() {
+            // Get the image URL from the first element of the top_tracks array
+            var imageUrl = topTracks[0].album.images[0].url; // Access the URL of the first track's album image
+
+            // Change the source of the image
+            imageElement.src = imageUrl;
+        });
+
+
     </script>
 {% endblock %}
 
