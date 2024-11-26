@@ -108,19 +108,26 @@ def callback(request):
         artist_info = sp.artist(artist['id'])  # Get detailed artist information
         genres.update(artist_info['genres'])
 
-    for track in top_tracks['items']:
-        track_duration_ms = track['duration_ms']
-        track_duration_minutes = track_duration_ms / 1000 / 60  # Convert milliseconds to minutes
-        total_minutes += track_duration_minutes
+    top_tracks = sp.current_user_top_tracks(limit=5)
+    top_tracks_with_previews = []
 
-    # Render the user profile and playlists in the template
+    for track in top_tracks['items']:
+        preview_url = track['preview_url']  # Spotify provides 30-second preview URL
+        top_tracks_with_previews.append({
+            'name': track['name'],
+            'artists': [artist['name'] for artist in track['artists']],
+            'album_image': track['album']['images'][0]['url'] if track['album']['images'] else None,
+            'preview_url': preview_url
+        })
+
+    # Pass the list of top tracks with previews to the template
     return render(request, 'registration/logged_in.html', {
         'profile': user_profile,
         'playlists': playlists['items'],
-        'top_tracks': top_tracks['items'] if top_tracks['items'] else None,  # If empty, pass None
-        'top_artists': top_artists['items'] if top_artists['items'] else None,  # If empty, pass None
-        'genres': list(genres) if genres else None,  # If no genres, pass None
-        'total_minutes': round(total_minutes, 2) if total_minutes else None,  # Round total minutes
+        'top_tracks': top_tracks_with_previews,
+        'top_artists': top_artists['items'],
+        'genres': list(genres) if genres else None,
+        'total_minutes': round(total_minutes, 2) if total_minutes else None,
     })
 @csrf_exempt
 def refresh_token(request):
