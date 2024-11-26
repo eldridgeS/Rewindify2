@@ -105,6 +105,10 @@
             {% endif %}
         </p>
 
+        <img id="wrapimage" style="max-width: 200px; height: auto; " src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFUAfyVe3Easiycyh3isP9wDQTYuSmGPsPQvLIJdEYvQ_DsFq5Ez2Nh_QjiS3oZ3B8ZPfK9cZQyIStmQMV1lDPLw" alt="Spotify Wrap Image" />
+
+        <button onclick="changeImage()" id="generateWrapButton" style="background-color:blue">Generate Wrap!</button>
+
         <p class="text-center my-3">
             <a href="{{ profile.external_urls.spotify }}" target="_blank" class="btn btn-success">Visit Spotify Profile</a>
         </p>
@@ -114,5 +118,24 @@
         </div>
     </div>
 </div>
+    <script>
+        function changeImage() {
+            // Get the image element by its ID
+            var image = document.getElementById("image");
+
+            // Change the source of the image
+            fetch(top_tracks)  // Replace with your actual API URL
+            .then(response => response.json())  // Parse the response to JSON
+            .then(data => {
+                // Access the first element of the array
+                const firstElement = data[0];
+
+                // Display the first element in the HTML
+                image.src = top_tracks.album.images[0].url;
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    </script>
 {% endblock %}
 
