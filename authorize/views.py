@@ -29,6 +29,10 @@ from django.contrib.sessions.models import Session
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
+from .forms import CustomPasswordChangeForm
 
 # Spotify API and app credentials
 CLIENT_ID = settings.SPOTIFY_CLIENT_ID
@@ -191,5 +195,17 @@ def delete(request):
     return render(request, 'delete_account.html')
 
 def password_change(request):
-    return render(request, 'registration/password_change.html')
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            # Update the session to keep the user logged in after password change
+            update_session_auth_hash(request, form.user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('home')  # Redirect to a page after successful password change
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = CustomPasswordChangeForm(user=request.user)
 
+    return render(request, 'registration/password_change.html', {'form': form})
