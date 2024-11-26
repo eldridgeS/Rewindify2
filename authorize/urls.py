@@ -15,7 +15,7 @@ urlpatterns = [
     path('link-success/', views.link_spotify_success, name='link_spotify_success'),
     path('wrappost/', views.wrappost, name='wrappost'),
     path('delete/', views.delete, name='delete'),
-
+    path('game/', views.song_guessing_game, name='song_guessing_game'),
     path('password_change/', views.password_change, name='password_change'),
 
 ]

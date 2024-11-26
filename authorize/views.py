@@ -209,3 +209,72 @@ def password_change(request):
         form = CustomPasswordChangeForm(user=request.user)
 
     return render(request, 'registration/password_change.html', {'form': form})
+
+
+from django.shortcuts import render, redirect
+
+
+@login_required
+def song_guessing_game(request):
+    # Get the user's Spotify token
+    access_token = request.session.get('spotify_token')
+    if not access_token:
+        return redirect('spotify_login')  # Redirect to login if token is missing
+
+    sp = spotipy.Spotify(auth=access_token)
+
+    # Get the user's top tracks (e.g., top 10 tracks)
+    top_tracks = sp.current_user_top_tracks(limit=10)
+    if not top_tracks['items']:
+        return render(request, 'registration/game_no_tracks.html')  # Handle case where no tracks are found
+
+    # Randomly select one track for the game
+    correct_track = random.choice(top_tracks['items'])
+
+    # Prepare game data for the correct track
+    correct_track_data = {
+        'track_name': correct_track['name'],
+        'track_preview_url': correct_track['preview_url'],
+        'track_artist': ", ".join([artist['name'] for artist in correct_track['artists']]),
+        'track_album_image': correct_track['album']['images'][0]['url'] if correct_track['album']['images'] else None
+    }
+
+    # Get a few more random tracks to provide as options (including the correct one)
+    options = [correct_track]
+    while len(options) < 4:
+        random_track = random.choice(top_tracks['items'])
+        if random_track not in options:  # Avoid duplicates
+            options.append(random_track)
+
+    # Shuffle the options so the correct track isn't always first
+    random.shuffle(options)
+
+    # Store the correct answer in the session for later validation
+    request.session['correct_answer'] = correct_track_data['track_name']
+
+    feedback = None
+
+    # Handle form submission (check the guess)
+    if request.method == 'POST':
+        user_guess = request.POST.get('user_guess').strip()  # Remove any leading/trailing spaces
+        correct_answer = request.session.get('correct_answer').strip()  # Same for correct_answer
+
+        # Compare the guess with the correct answer (case insensitive)
+        if user_guess.lower() == correct_answer.lower():
+            feedback = "Correct! You guessed the right song."
+        else:
+            feedback = f"Incorrect! The correct answer was '{correct_answer}'."
+
+    # Prepare options data for rendering
+    options_data = [{
+        'track_name': track['name'],
+        'track_id': track['id'],
+        'track_artist': ", ".join([artist['name'] for artist in track['artists']]),
+        'track_album_image': track['album']['images'][0]['url'] if track['album']['images'] else None
+    } for track in options]
+
+    return render(request, 'registration/song_guessing_game.html', {
+        **correct_track_data,
+        'options': options_data,
+        'feedback': feedback
+    })
