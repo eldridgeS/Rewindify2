@@ -14,5 +14,6 @@ urlpatterns = [
     path('spotify/playlists/', views.get_spotify_playlists, name='spotify_playlists'),
     path('link-success/', views.link_spotify_success, name='link_spotify_success'),
     path('wrappost/', views.wrappost, name='wrappost'),
+    path('delete/', views.delete, name='delete'),
 
 ]

@@ -26,6 +26,9 @@ from django.http import JsonResponse, HttpResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.sessions.models import Session
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # Spotify API and app credentials
 CLIENT_ID = settings.SPOTIFY_CLIENT_ID
@@ -177,6 +180,15 @@ def link_spotify_success(request):
 def wrappost(request):
     return render(request, 'registration/wrap_post.html')
 
+@login_required
+def delete(request):
+    if request.method == 'POST':
+        user = request.user
+        user.delete()
+        messages.success(request, "Your account has been deleted successfully.")
+        return redirect('home')  # Redirect to home page or login page after account deletion
+
+    return render(request, 'delete_account.html')
 
 
 
