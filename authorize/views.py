@@ -190,5 +190,6 @@ def delete(request):
 
     return render(request, 'delete_account.html')
 
-
+def password_change(request):
+    return render(request, 'registration/password_change.html')
 
