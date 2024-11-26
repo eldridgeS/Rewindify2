@@ -236,7 +236,7 @@ def song_guessing_game(request):
     sp = spotipy.Spotify(auth=access_token)
     top_tracks = sp.current_user_top_tracks(limit=10)
     if not top_tracks['items']:
-        return render(request, 'registration/game_no_tracks.html')
+        return render(request, 'registration/song_guessing_game.html')
 
     def prepare_game_data():
         correct_track = random.choice(top_tracks['items'])
