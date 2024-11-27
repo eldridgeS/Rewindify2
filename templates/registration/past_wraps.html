@@ -3,7 +3,7 @@
 {% block title %}Past Wraps - Rewindify{% endblock %}
 
 {% block content %}
-<div class="container my-5">
+<div class="container my-5" id="divid">
     <h1 class="text-center text-primary">Your Past Wraps</h1>
     <hr class="mb-4">
 
@@ -22,8 +22,18 @@
     {% endif %}
 
     <div class="text-center mt-4">
-        <a href="{% url 'wrappost' %}" class="btn btn-success">Create New Wrap</a>
+        <a id="createWrapButton" class="btn btn-success">Create New Wrap</a>
         <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
     </div>
 </div>
+    <script>
+        createWrapButton.addEventListener('click', function() {
+            const img = document.createElement('img');
+            img.src = 'https://hips.hearstapps.com/hmg-prod/images/portrait-of-white-dog-on-field-royalty-free-image-1682310209.jpg?crop=0.580xw:0.870xh;0.318xw,0.130xh&resize=980:*';
+            img.style = 'width: 100px;height: auto';
+            img.alt = 'Example Image';
+            const div = document.getElementById('divid');
+            div.appendChild(img);
+        });
+    </script>
 {% endblock %}
