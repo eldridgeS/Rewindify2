@@ -14,7 +14,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 
 from .forms import CustomUserCreationForm
-from .models import UserSpotifyProfile
+from .models import UserSpotifyProfile, Wrap
 import logging
 import base64
 import json
@@ -192,7 +192,7 @@ def delete(request):
         messages.success(request, "Your account has been deleted successfully.")
         return redirect('home')  # Redirect to home page or login page after account deletion
 
-    return render(request, 'delete_account.html')
+    return render(request, 'registration/delete.html')
 
 def password_change(request):
     if request.method == 'POST':
@@ -218,13 +218,13 @@ def delete(request):
         messages.success(request, "Your account has been deleted successfully.")
         return redirect("home")  # Redirect to the homepage or login page after deletion
 
-    return render(request, "delete.html")
+    return render(request, "registration/delete.html")
 
 
 @login_required
 def past_wraps(request):
     wraps = Wrap.objects.filter(user=request.user).order_by("-created_at")
-    return render(request, "past_wraps.html", {"wraps": wraps})
+    return render(request, "registration/past_wraps.html", {"wraps": wraps})
 
 
 @login_required
