@@ -125,14 +125,15 @@
                 </div>
 
             </div>
-            <!-- Carousel controls -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#dataCarousel" data-bs-slide="prev">
+
+            <!-- Carousel controls with updated buttons -->
+            <button class="carousel-control-prev custom-carousel-control" type="button" data-bs-target="#dataCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
+                <span class="visually-hidden"></span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#dataCarousel" data-bs-slide="next">
+            <button class="carousel-control-next custom-carousel-control" type="button" data-bs-target="#dataCarousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+                <span class="visually-hidden"></span>
             </button>
         </div>
 
@@ -190,4 +191,52 @@ document.addEventListener('DOMContentLoaded', function() {
     playRandomPreview();
 });
 </script>
+
+{% block styles %}
+<style>
+    /* Custom styling for carousel buttons */
+    .carousel-control-prev, .carousel-control-next {
+        background-color: transparent;  /* Make background transparent */
+        border-radius: 50%;  /* Circular shape */
+        width: 50px;
+        height: 50px;
+        top: 50%;  /* Center vertically */
+        transform: translateY(-50%);
+        border: none; /* Remove border */
+        font-size: 30px;  /* Increase font size for larger arrows */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;  /* Text color */
+    }
+
+    .carousel-control-prev-icon, .carousel-control-next-icon {
+        background-color: transparent;  /* Remove the default background */
+    }
+
+    /* Left arrow */
+    .carousel-control-prev {
+        content: '←'; /* Left arrow */
+    }
+
+    /* Right arrow */
+    .carousel-control-next {
+        content: '→'; /* Right arrow */
+    }
+
+    /* Hover effects */
+    .carousel-control-prev:hover, .carousel-control-next:hover {
+        background-color: rgba(0, 0, 0, 0.7);  /* Darker background on hover */
+    }
+
+    /* Optional: Make carousel control icons larger on mobile */
+    @media (max-width: 767px) {
+        .carousel-control-prev, .carousel-control-next {
+            width: 60px;
+            height: 60px;
+            font-size: 35px;  /* Increase arrow size for smaller screens */
+        }
+    }
+</style>
+{% endblock %}
 {% endblock %}
