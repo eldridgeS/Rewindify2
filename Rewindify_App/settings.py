@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import environ
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-nf^2m8qs1b21fvw$#@dokoq5(7cn+8@_!tw(38%p0!a71p+2hy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -130,7 +131,7 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
 env = environ.Env()
-environ.Env.read_env()  # Reads the .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SPOTIFY_CLIENT_ID = env("SPOTIFY_CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = env("SPOTIFY_CLIENT_SECRET")
 SPOTIFY_REDIRECT_URI = env("SPOTIFY_REDIRECT_URI")
