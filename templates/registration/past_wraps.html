@@ -7,19 +7,19 @@
     <h1 class="text-center text-primary">Your Past Wraps</h1>
     <hr class="mb-4">
 
-    {% if Wraps %}
-        <div class="list-group">
-            {% for wrap in wraps %}
-                <div class="list-group-item mb-2">
-                    <h5 class="text-dark">{{ wrap.title }}</h5>
-                    <p class="text-muted small">Created on {{ wrap.created_at|date:"F j, Y, g:i a" }}</p>
-                    <p>{{ wrap.description }}</p>
-                </div>
-            {% endfor %}
-        </div>
-    {% else %}
+{#    {% if Wraps %}#}
+{#        <div class="list-group">#}
+{#            {% for wrap in wraps %}#}
+{#                <div class="list-group-item mb-2">#}
+{#                    <h5 class="text-dark">{{ wrap.title }}</h5>#}
+{#                    <p class="text-muted small">Created on {{ wrap.created_at|date:"F j, Y, g:i a" }}</p>#}
+{#                    <p>{{ wrap.description }}</p>#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#        </div>#}
+{#    {% else %}#}
         <p class="text-center text-muted">You have not created any wraps yet.</p>
-    {% endif %}
+{#    {% endif %}#}
 
     <div class="text-center mt-4">
         <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>

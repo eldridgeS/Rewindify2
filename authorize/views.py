@@ -223,15 +223,18 @@ def delete(request):
 
 @login_required
 def past_wraps(request):
-    wraps = Wrap.objects.filter(user=request.user).order_by("-created_at")
-    return render(request, "registration/past_wraps.html", {"wraps": wraps})
+    #wraps = Wrap.objects.filter(user=request.user).order_by("-created_at")
+    #return render(request, "registration/past_wraps.html", {"wraps": wraps})
+    return render(request, "registration/past_wraps.html", )
+
 
 
 @login_required
 def song_guessing_game(request):
     access_token = request.session.get('spotify_token')
     if not access_token:
-        return redirect('spotify_login')
+        messages.success(request, "You have not generated any wraps yet. Redirecting...")
+        return redirect('loginn')
 
     sp = spotipy.Spotify(auth=access_token)
     top_tracks = sp.current_user_top_tracks(limit=10)
