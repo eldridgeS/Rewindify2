@@ -30,9 +30,19 @@
                     <p class="lead text-warning text-center">We are so happy you're here!</p>
                 </div>
 
+
+                <div class="carousel-item">
+                    <h3 class="mt-4 text-primary text-center">Time to hit that play button!</h3>
+                    <p class="lead text-warning text-center">
+                        Get ready to discover your most loved tracks, artists, and genres!
+                        Let's dive into your musical journey. 🎶
+                    </p>
+                </div>
+
+
                 <!-- Top Tracks Section -->
                 <div class="carousel-item">
-                    <h3 class="mt-4 text-primary">Your Top Tracks</h3>
+                    <h3 class="mt-4 text-primary text-center">Your Top Tracks</h3>
                     <ul class="list-unstyled">
                         {% if top_tracks %}
                             {% for track in top_tracks %}
@@ -58,9 +68,18 @@
                     </ul>
                 </div>
 
+
+
+                <div class="carousel-item">
+                    <h3 class="mt-4 text-primary text-center">Hmmm... Interesting Choices</h3>
+                    <p class="lead text-warning text-center">
+                        Okay, we see you. Some of these tracks are definitely... unique. But hey, music is subjective, right? 🤔
+                    </p>
+                </div>
+
                 <!-- Top Artists Section -->
                 <div class="carousel-item">
-                    <h3 class="mt-4 text-primary">Your Top Artists</h3>
+                    <h3 class="mt-4 text-primary text-center">Your Top Artists</h3>
                     <ul class="list-unstyled">
                         {% if top_artists %}
                             {% for artist in top_artists %}
@@ -77,9 +96,18 @@
                     </ul>
                 </div>
 
+
+                <div class="carousel-item">
+                    <h3 class="mt-4 text-primary text-center">Oh... So You’re One of *Those* People</h3>
+                    <p class="lead text-warning text-center">
+                        A few of these tracks really take us back... to some dark times... but who are we to judge? You do you, my friend. 😬
+                    </p>
+                </div>
+
+
                 <!-- Top Genres Section -->
                 <div class="carousel-item">
-                    <h3 class="mt-4 text-primary">Your Top Genres</h3>
+                    <h3 class="mt-4 text-primary text-center">Your Top Genres</h3>
                     <ul class="list-unstyled">
                         {% if genres %}
                             {% for genre in genres %}
@@ -93,9 +121,41 @@
                     </ul>
                 </div>
 
+                <div class="carousel-item">
+                    <h3 class="mt-4 text-primary text-center">We *Really* Didn’t Expect That</h3>
+                    <p class="lead text-warning text-center">
+                        Wow, really? That's the best you got? It’s like you’ve never heard of any *real* music. But sure, whatever works for you. 🙄
+                    </p>
+                </div>
+
+
+
+
+                <!-- Total Minutes Listened Section -->
+                <div class="carousel-item">
+                    <h3 class="mt-4 text-primary text-center">Total Minutes Listened</h3>
+                    <p class="lead text-light text-center">
+                        {% if total_minutes %}
+                            {{ total_minutes }} minutes
+                        {% else %}
+                            No listening data available.
+                        {% endif %}
+                    </p>
+                </div>
+
+
+                <div class="carousel-item">
+                    <h3 class="mt-4 text-primary text-center">Is that really it?</h3>
+                    <p class="lead text-warning text-center">
+                        Those are rookie numbers, a real music enjoyer would never have numbers *that* low
+                    </p>
+                </div>
+
+
+
                 <!-- Playlists Section -->
                 <div class="carousel-item">
-                    <h3 class="mt-4 text-primary">Your Playlists</h3>
+                    <h3 class="mt-4 text-primary text-center">Your Playlists</h3>
                     <ul class="list-unstyled">
                         {% if playlists %}
                             {% for playlist in playlists %}
@@ -112,15 +172,27 @@
                     </ul>
                 </div>
 
-                <!-- Total Minutes Listened Section -->
                 <div class="carousel-item">
-                    <h3 class="mt-4 text-primary">Total Minutes Listened</h3>
-                    <p class="lead text-light">
-                        {% if total_minutes %}
-                            {{ total_minutes }} minutes
-                        {% else %}
-                            No listening data available.
-                        {% endif %}
+                    <h3 class="mt-4 text-primary text-center">Are You *Sure* About These Playlists?</h3>
+                    <p class="lead text-warning text-center">
+                        I mean, we get it, we all have a guilty pleasure... but a playlist called <strong>"{{ playlists.0.name }}"</strong>? Hmm. 🤨
+                    </p>
+                </div>
+
+
+
+
+                <div class="carousel-item">
+                    <h3 class="mt-4 text-primary text-center">But Hey, Who Are We to Judge?</h3>
+                    <p class="lead text-light text-center">
+                        Music is personal, and who cares if you have questionable taste? As long as you’re happy listening to *that*, more power to you. 🤷‍♀️
+                    </p>
+                </div>
+
+                <div class="carousel-item">
+                    <h3 class="mt-4 text-primary text-center">Have short term memory loss?</h3>
+                    <p class="lead text-warning text-center">
+                        Let's spin this record back and take another look at your wrap!
                     </p>
                 </div>
 
